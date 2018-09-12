@@ -8,5 +8,6 @@ FROM alpine:latest
 RUN apk --no-cache add ca-certificates
 WORKDIR /app/
 COPY --from=builder /go/src/github.com/yuriichv/demo-discount-service/app .
+EXPOSE 8888
 CMD ["./app"]  
 ENTRYPOINT [""]
