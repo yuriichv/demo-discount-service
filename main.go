@@ -16,7 +16,7 @@ import (
 )
 
 var (
-	logger    = log.New(os.Stdout, "INFO: ", log.Ldate|log.Ltime|log.Lshortfile)
+	//	logger    = log.New(os.Stdout, "INFO: ", log.Ldate|log.Ltime|log.Lshortfile)
 	port      = getEnv("PORT", "8888")                                 //flag.String("p", "8888", "server port")
 	zipkinUrl = getEnv("ZIPKIN", "http://localhost:9411/api/v2/spans") //flag.String("s", "127.0.0.1", "server address")
 )
@@ -59,6 +59,7 @@ func newTracer() (*zipkin.Tracer, error) {
 func discountHandler(w http.ResponseWriter, r *http.Request) {
 	//random test fault
 	if rand.Intn(100) <= 10 {
+		log.Printf("Error in discount calculate")
 		w.WriteHeader(500)
 		return
 	}
@@ -99,6 +100,7 @@ func main() {
 		zipkinhttp.SpanName("request")), // name for request span
 	)
 
+	log.Printf("Start listening on port %v", port)
 	log.Fatal(http.ListenAndServe(":"+port, router))
 
 }
